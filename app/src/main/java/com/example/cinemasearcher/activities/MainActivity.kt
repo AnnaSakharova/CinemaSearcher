@@ -1,11 +1,9 @@
 package com.example.cinemasearcher.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,23 +11,23 @@ import com.example.cinemasearcher.R
 import com.example.cinemasearcher.network.Movies
 import com.example.cinemasearcher.network.RetrofitService
 import com.example.cinemasearcher.recycler.RecyclerAdapter
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
 
-    val KEY_TITLE = "title"
-    val KEY_POSTER_URL = "poster"
-    val KEY_YEAR = "year"
-    val KEY_TYPE = "type"
-    val KEY_IMDB = "imdbID"
+//    val KEY_TITLE = "title"
+//    val KEY_POSTER_URL = "poster"
+//    val KEY_YEAR = "year"
+//    val KEY_TYPE = "type"
+//    val KEY_IMDB = "imdbID"
 
     lateinit var recyclerView: RecyclerView
     lateinit var recyclerAdapter: RecyclerAdapter
+
+    val TAG = "Debug"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +36,9 @@ class MainActivity : AppCompatActivity(){
 
         recyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
-
+        recyclerAdapter = RecyclerAdapter(this@MainActivity)
+        recyclerView.adapter = recyclerAdapter
+        Log.d(TAG, "Назначен адаптер")
 
         responseFromAPI()
 
@@ -48,48 +48,53 @@ class MainActivity : AppCompatActivity(){
 
         var call = RetrofitService.start().getMovies()
 
-
         call.enqueue(object : Callback<ArrayList<Movies>> {
             override fun onResponse(
-                call: Call<ArrayList<Movies>>,
-                response: Response<ArrayList<Movies>>
+                call: Call<ArrayList<Movies>>, response: Response<ArrayList<Movies>>
             ) {
+                var txtWarning: TextView = findViewById(R.id.txt_warning)
 
-                if (response.isSuccessful) {
-                    var moviesArrayList: ArrayList<Movies> = response.body()!!
-                    recyclerAdapter = RecyclerAdapter(moviesArrayList, this@MainActivity)
-                    recyclerView.adapter = recyclerAdapter
-
-                }
-                if (!response.isSuccessful) {
-                    print(response.errorBody().toString())
+                if ((response.isSuccessful)) {
+                    if (response.code() == 0) {
+                        recyclerView.visibility = View.GONE
+                        txtWarning.visibility = View.VISIBLE
+                        txtWarning.setText(R.string.notAvaliable)
+                        Log.d(TAG, "if (response.code() == 0)")
+                    }
+                    if (response.code() != 0) {
+                        val moviesResponse = response.body()
+                        moviesResponse?.let { setDataIntoRecyclerView(it) }
+                        Log.d(TAG,"Получение тела ответа")
+                    }
+                } else {
+                    when (response.code()) {
+                        404 -> {
+                            recyclerView.visibility = View.GONE
+                            txtWarning.visibility = View.VISIBLE
+                            txtWarning.setText(R.string.warning404)
+                            Log.d(TAG,"Ошибка 404")
+                        }
+                        500 -> {
+                            recyclerView.visibility = View.GONE
+                            txtWarning.visibility = View.VISIBLE
+                            txtWarning.setText(R.string.warning500)
+                            Log.d(TAG,"Ошибка 404")
+                        }
+                    }
                 }
             }
 
             override fun onFailure(call: Call<ArrayList<Movies>>, t: Throwable) {
-
                 t.printStackTrace()
-                Toast.makeText(this@MainActivity, "Произошла ошибка", Toast.LENGTH_LONG).show()
-
             }
         })
+    }
 
+    private fun setDataIntoRecyclerView(it: ArrayList<Movies>) {
+        recyclerAdapter.moviesAL = it
+        recyclerAdapter.notifyDataSetChanged()
+        Log.d(TAG, "setDataIntoRecyclerView")
 
-        //        var call = RetrofitService.start().getMovies()
-//            .subscribeOn(Schedulers.io())
-//            .unsubscribeOn(Schedulers.io())
-//                // данные обрабатываются подписчиком в mainTread
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe({ it ->
-//                Log.d("size", it.size.toString())
-//                setDataInRecyclerView(it = )
-//            }, { it ->
-//                Log.d("error", "error")
-//            })
-//    }
-//    private fun setDataInRecyclerView(it: ArrayList<Movies>?) {
-//        recyclerView.adapter = RecyclerAdapter(it!!,this)
-//    }
     }
 }
 //

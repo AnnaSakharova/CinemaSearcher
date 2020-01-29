@@ -9,5 +9,9 @@
     <string name="tvType">TextView</string>
     <string name="img">ImageView</string>
     <string name="todo">TODO</string>
+    <string name="warning404">Произошла ошибка 404</string>
+    <string name="warning">Произошла ошибка</string>
+    <string name="warning500">Произошла ошибка 500</string>
+    <string name="notAvaliable">Список фильмов недоступен</string>
 
 </resources>
