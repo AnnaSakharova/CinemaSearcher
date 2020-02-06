@@ -13,5 +13,6 @@
     <string name="warning">Произошла ошибка</string>
     <string name="warning500">Произошла ошибка 500</string>
     <string name="notAvaliable">Список фильмов недоступен</string>
+    <string name="unknownError">Произошла неизвестная ошибка, повторите попытку позже</string>
 
 </resources>

@@ -8,7 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinemasearcher.R
-import com.example.cinemasearcher.network.Movies
+import com.example.cinemasearcher.network.MovieModel
+import com.example.cinemasearcher.network.PopularMovies
 import com.example.cinemasearcher.network.RetrofitService
 import com.example.cinemasearcher.recycler.RecyclerAdapter
 import retrofit2.Call
@@ -48,11 +49,12 @@ class MainActivity : AppCompatActivity() {
 
         var call = RetrofitService.start().getMovies()
 
-        call.enqueue(object : Callback<ArrayList<Movies>> {
+        call.enqueue(object : Callback<PopularMovies> {
+
+            var txtWarning: TextView = findViewById(R.id.txt_warning)
             override fun onResponse(
-                call: Call<ArrayList<Movies>>, response: Response<ArrayList<Movies>>
+                call: Call<PopularMovies>, response: Response<PopularMovies>
             ) {
-                var txtWarning: TextView = findViewById(R.id.txt_warning)
 
                 if ((response.isSuccessful)) {
                     if (response.code() == 0) {
@@ -64,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                     if (response.code() != 0) {
                         val moviesResponse = response.body()
                         moviesResponse?.let { setDataIntoRecyclerView(it) }
-                        Log.d(TAG,"Получение тела ответа")
+                        Log.d(TAG, "Получение тела ответа")
                     }
                 } else {
                     when (response.code()) {
@@ -72,26 +74,40 @@ class MainActivity : AppCompatActivity() {
                             recyclerView.visibility = View.GONE
                             txtWarning.visibility = View.VISIBLE
                             txtWarning.setText(R.string.warning404)
-                            Log.d(TAG,"Ошибка 404")
+                            Log.d(TAG, "Ошибка 404")
                         }
                         500 -> {
                             recyclerView.visibility = View.GONE
                             txtWarning.visibility = View.VISIBLE
                             txtWarning.setText(R.string.warning500)
-                            Log.d(TAG,"Ошибка 404")
+                            Log.d(TAG, "Ошибка 500")
                         }
+                        else -> {
+                            recyclerView.visibility = View.GONE
+                            txtWarning.visibility = View.VISIBLE
+                            txtWarning.setText(R.string.unknownError)
+                        }
+
                     }
                 }
             }
 
-            override fun onFailure(call: Call<ArrayList<Movies>>, t: Throwable) {
+            override fun onFailure(call: Call<MovieModel>, t: Throwable) {
+                recyclerView.visibility = View.GONE
+                txtWarning.visibility = View.VISIBLE
+                txtWarning.setText(R.string.unknownError)
                 t.printStackTrace()
+                Log.d(TAG, "Прога упала в onFailure")
+
             }
         })
     }
 
-    private fun setDataIntoRecyclerView(it: ArrayList<Movies>) {
-        recyclerAdapter.moviesAL = it
+    private fun setDataIntoRecyclerView(movieModel: PopularMovies) {
+
+        val listFromResponse: List<MovieModel> = movieModel.results
+
+        recyclerAdapter.resultsList = listFromResponse
         recyclerAdapter.notifyDataSetChanged()
         Log.d(TAG, "setDataIntoRecyclerView")
 

@@ -8,14 +8,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinemasearcher.R
-import com.example.cinemasearcher.network.Movies
+import com.example.cinemasearcher.network.MovieModel
+import com.example.cinemasearcher.network.PopularMovies
 import com.squareup.picasso.Picasso
 
 
 class RecyclerAdapter(val context: Context) :
     RecyclerView.Adapter<RecyclerAdapter.MovieViewHolder>() {
 
-    var moviesAL: ArrayList<Movies> = arrayListOf()
+    var resultsList: List<MovieModel> = emptyList()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -24,30 +25,31 @@ class RecyclerAdapter(val context: Context) :
         return MovieViewHolder(view)
     }
 
-    override fun getItemCount() = moviesAL.size
+    override fun getItemCount(): Int = resultsList.size
 
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        val currentMovie: Movies = moviesAL.get(position)
 
-        var URLposter: String = currentMovie.poster_path
+        val currentMovie: MovieModel = resultsList.get(position)
 
-        holder.title.text = moviesAL.get(position).title
-        holder.imdb.text = moviesAL.get(position).id.toString()
-        holder.type.text = moviesAL.get(position).release_date
-        holder.year.text = moviesAL.get(position).original_language.toString()
+        var URLposter: String? = currentMovie.poster_path
 
-        Picasso.get().load(URLposter).fit().into(holder.poster)
+        holder.tvTitle.text = resultsList.get(position).title
+        holder.tvImage.text = resultsList.get(position).id.toString()
+        holder.tvType.text = resultsList.get(position).release_date
+        holder.tvYear.text = resultsList.get(position).original_language
+
+        Picasso.get().load(URLposter).fit().into(holder.tvPoster)
 
     }
 
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val title: TextView = itemView.findViewById(R.id.tvTitle)
-        val poster: ImageView = itemView.findViewById(R.id.poster)
-        val type: TextView = itemView.findViewById(R.id.tvType)
-        val year: TextView = itemView.findViewById(R.id.tvYear)
-        val imdb: TextView = itemView.findViewById(R.id.tvimdb)
+        val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
+        val tvPoster: ImageView = itemView.findViewById(R.id.poster)
+        val tvType: TextView = itemView.findViewById(R.id.tvType)
+        val tvYear: TextView = itemView.findViewById(R.id.tvYear)
+        val tvImage: TextView = itemView.findViewById(R.id.tvimdb)
 
     }
 

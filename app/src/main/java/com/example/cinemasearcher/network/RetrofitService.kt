@@ -9,7 +9,6 @@ object RetrofitService {
 
     private const val BASE_URL = "https://api.themoviedb.org/3/"
 
-
     fun start(): MoviesAPI {
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -17,9 +16,6 @@ object RetrofitService {
             .build()
         return retrofit.create(MoviesAPI::class.java)
     }
-
-
-
 }
 
 
