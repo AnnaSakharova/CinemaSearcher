@@ -1,55 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:paddingTop="6dp"
-    android:paddingBottom="8dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingTop="6dp"
+    android:paddingBottom="8dp">
 
 
     <ImageView
         android:id="@+id/poster"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        app:srcCompat="@mipmap/ic_launcher_round"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:contentDescription="@string/todo" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
-            android:textColor="@android:color/black"
             android:layout_height="wrap_content"
-            android:text="@string/tvTitle" />
+            android:text="@string/nameOfFilm"
+            android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/tvimdb"
+            android:id="@+id/tv_original_language"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="@string/tvimdbID" />
+            android:text="@string/tvimdbID"
+            android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/tvType"
+            android:id="@+id/tv_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="@string/tvType" />
+            android:text="@string/tvType"
+            android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/tvYear"
+            android:id="@+id/tv_release_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="@string/tvYear" />
+            android:text="@string/tvYear"
+            android:textColor="@android:color/black" />
+
     </LinearLayout>
-
 
 </LinearLayout>

@@ -10,9 +10,25 @@
     <string name="img">ImageView</string>
     <string name="todo">TODO</string>
     <string name="warning404">Произошла ошибка 404</string>
-    <string name="warning">Произошла ошибка</string>
     <string name="warning500">Произошла ошибка 500</string>
     <string name="notAvaliable">Список фильмов недоступен</string>
-    <string name="unknownError">Произошла неизвестная ошибка, повторите попытку позже</string>
+    <string name="unknownError">Произошла неизвестная ошибка. Повторите попытку позже</string>
+    <string name="button">Кнопка</string>
+    <string name="forTVmain">пока тут ничего нет</string>
+    <string name="apiKey">5db4e8292aa115ea2fafa4ef4c7ac872</string>
+    <string name="connection_problem">Проблема подключения</string>
+    <string name="movie">Фильм:</string>
+    <string name="release_date">Дата релиза:</string>
+    <string name="orig_lang">Язык оригинала:</string>
+    <string name="homepage">Домашняя страница:</string>
+    <string name="overview">Описание:</string>
+    <string name="genres">Жанры:</string>
+    <string name="triller">Триллер, </string>
+    <string name="mystery">Мистика</string>
+    <string name="drama">Драма</string>
+    <string name="raiting">Рейтинг:</string>
+    <string name="budget">Бюджет:</string>
+    <string name="nameOfFilm">Название</string>
+
 
 </resources>
